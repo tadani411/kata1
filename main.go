@@ -1,37 +1,32 @@
 package main
 
-import (
-	"log"
-	"os"
-
-	tb "gopkg.in/tucnak/telebot.v2"
-)
+import "fmt"
 
 func main() {
-	var (
-		port      = os.Getenv("PORT")       // set automatically
-		publicURL = os.Getenv("PUBLIC_URL") // from config vars
-		token     = os.Getenv("TOKEN")      // from config vars
-	)
+	// var (
+	// 	port      = os.Getenv("PORT")       // set automatically
+	// 	publicURL = os.Getenv("PUBLIC_URL") // from config vars
+	// 	token     = os.Getenv("TOKEN")      // from config vars
+	// )
 
-	webhook := &tb.Webhook{
-		Listen:   ":" + port,
-		Endpoint: &tb.WebhookEndpoint{PublicURL: publicURL},
-	}
+	// webhook := &tb.Webhook{
+	// 	Listen:   ":" + port,
+	// 	Endpoint: &tb.WebhookEndpoint{PublicURL: publicURL},
+	// }
 
-	pref := tb.Settings{
-		Token:  token,
-		Poller: webhook,
-	}
+	// pref := tb.Settings{
+	// 	Token:  token,
+	// 	Poller: webhook,
+	// }
 
-	b, err := tb.NewBot(pref)
+	// b, err := tb.NewBot(pref)
 
-	if err != nil {
-		log.Fatal(err)
-	}
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	b.Handle("/hello", func(m *tb.Message) {
-		b.Send(m.Sender, "Hi!")
-	})
-
+	// b.Handle("/hello", func(m *tb.Message) {
+	// 	b.Send(m.Sender, "Hi!")
+	// })
+	fmt.Println("Hello !")
 }
