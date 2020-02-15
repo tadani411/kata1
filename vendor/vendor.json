@@ -1,6 +1,11 @@
 {
 	"comment": "",
 	"ignore": "test",
-	"package": [],
+	"package": [
+		{
+			"path": "https://gopkg.in/tucnak/telebot.v2",
+			"revision": ""
+		}
+	],
 	"rootPath": "kata1"
 }
