@@ -1,5 +1,10 @@
 {
 	"comment": "",
+	"heroku": {
+		"install": [
+			"https://gopkg.in/tucnak/telebot.v2"
+		]
+	},
 	"ignore": "test",
 	"package": [
 		{
@@ -7,8 +12,5 @@
 			"revision": ""
 		}
 	],
-	"rootPath": "kata1",
-	"heroku": {
-		"install":["https://gopkg.in/tucnak/telebot.v2"]
-	}
+	"rootPath": "kata1"
 }
