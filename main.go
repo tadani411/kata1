@@ -15,6 +15,8 @@ func main() {
 		token = os.Getenv("TOKEN") // from config vars
 	)
 
+	log.Println(token)
+
 	poller := &tb.LongPoller{
 		Timeout: 10 * time.Second,
 	}
