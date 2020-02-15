@@ -11,8 +11,8 @@ import (
 func main() {
 	var (
 		// port      = os.Getenv("PORT")       // set automatically
-		// publicURL = os.Getenv("PUBLIC_URL") // from config vars
-		token = os.Getenv("TOKEN") // from config vars
+		publicURL = os.Getenv("PUBLIC_URL") // from config vars
+		token     = os.Getenv("TOKEN")      // from config vars
 	)
 
 	log.Println(token)
@@ -22,6 +22,7 @@ func main() {
 	}
 
 	pref := tb.Settings{
+		URL:    publicURL,
 		Token:  token,
 		Poller: poller,
 	}
