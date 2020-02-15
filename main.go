@@ -3,25 +3,25 @@ package main
 import (
 	"log"
 	"os"
+	"time"
 
 	tb "gopkg.in/tucnak/telebot.v2"
 )
 
 func main() {
 	var (
-		port      = os.Getenv("PORT")       // set automatically
-		publicURL = os.Getenv("PUBLIC_URL") // from config vars
-		token     = os.Getenv("TOKEN")      // from config vars
+		// port      = os.Getenv("PORT")       // set automatically
+		// publicURL = os.Getenv("PUBLIC_URL") // from config vars
+		token = os.Getenv("TOKEN") // from config vars
 	)
 
-	webhook := &tb.Webhook{
-		Listen:   ":" + port,
-		Endpoint: &tb.WebhookEndpoint{PublicURL: publicURL},
+	poller := &tb.LongPoller{
+		Timeout: 10 * time.Second,
 	}
 
 	pref := tb.Settings{
 		Token:  token,
-		Poller: webhook,
+		Poller: poller,
 	}
 
 	b, err := tb.NewBot(pref)
