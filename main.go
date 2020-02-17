@@ -2,14 +2,14 @@ package main
 
 import (
 	"log"
-	"os"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
 func main() {
 	var (
-		token = os.Getenv("TOKEN")
+		// token = os.Getenv("TOKEN")
+		token = "891489265:AAHt-P6qMWV5n8gPH88_xdeFsahm-hEU7k0"
 	)
 
 	bot, err := tgbotapi.NewBotAPI(token)
@@ -22,7 +22,7 @@ func main() {
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 
 	u := tgbotapi.NewUpdate(0)
-	u.Timeout = 60
+	u.Timeout = 3600
 
 	updates, _ := bot.GetUpdatesChan(u)
 
@@ -31,12 +31,14 @@ func main() {
 			continue
 		}
 
-		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
+		// log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
 
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 		msg.ReplyToMessageID = update.Message.MessageID
 
 		bot.Send(msg)
+
+		log.Println("current size ", len(updates))
 	}
 
 }
