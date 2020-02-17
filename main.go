@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -18,7 +19,7 @@ func main() {
 	log.Println(token)
 
 	poller := &tb.LongPoller{
-		Timeout: 10 * time.Second,
+		Timeout: 100 * time.Second,
 	}
 
 	pref := tb.Settings{
@@ -31,10 +32,15 @@ func main() {
 
 	if err != nil {
 		log.Fatal(err)
+		fmt.Println(err)
 	}
 
 	b.Handle("/hello", func(m *tb.Message) {
 		b.Send(m.Sender, "Hi!")
+	})
+
+	b.Handle(tb.OnText, func(m *tb.Message) {
+		b.Send(m.Sender, "Hi2")
 	})
 
 	b.Start()
