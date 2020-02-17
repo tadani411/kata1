@@ -12,33 +12,34 @@ func main() {
 		token = "891489265:AAHt-P6qMWV5n8gPH88_xdeFsahm-hEU7k0"
 	)
 
-	bot, err := tgbotapi.NewBotAPI(token)
-	if err != nil {
-		log.Panic(err)
-	}
+	for {
 
-	bot.Debug = true
-
-	log.Printf("Authorized on account %s", bot.Self.UserName)
-
-	u := tgbotapi.NewUpdate(0)
-	u.Timeout = 3600
-
-	updates, _ := bot.GetUpdatesChan(u)
-
-	for update := range updates {
-		if update.Message == nil { // ignore any non-Message Updates
-			continue
+		bot, err := tgbotapi.NewBotAPI(token)
+		if err != nil {
+			log.Panic(err)
 		}
 
-		// log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
+		bot.Debug = true
 
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
-		msg.ReplyToMessageID = update.Message.MessageID
+		log.Printf("Authorized on account %s", bot.Self.UserName)
 
-		bot.Send(msg)
+		u := tgbotapi.NewUpdate(0)
+		u.Timeout = 3600
 
-		log.Println("current size ", len(updates))
+		updates, _ := bot.GetUpdatesChan(u)
+
+		for update := range updates {
+			if update.Message == nil { // ignore any non-Message Updates
+				continue
+			}
+
+			// log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
+
+			msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
+			msg.ReplyToMessageID = update.Message.MessageID
+
+			bot.Send(msg)
+		}
 	}
 
 }
