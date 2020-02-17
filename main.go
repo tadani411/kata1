@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
@@ -21,21 +22,26 @@ func main() {
 
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 
-	u := tgbotapi.NewUpdate(0)
-	u.Timeout = 60
+	for true {
+		u := tgbotapi.NewUpdate(0)
+		u.Timeout = 60
 
-	updates, err := bot.GetUpdatesChan(u)
+		updates, _ := bot.GetUpdatesChan(u)
 
-	for update := range updates {
-		if update.Message == nil { // ignore any non-Message Updates
-			continue
+		for update := range updates {
+			if update.Message == nil { // ignore any non-Message Updates
+				continue
+			}
+
+			log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
+
+			msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
+			msg.ReplyToMessageID = update.Message.MessageID
+
+			bot.Send(msg)
+
+			time.Sleep(30 * time.Second)
 		}
-
-		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
-
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
-		msg.ReplyToMessageID = update.Message.MessageID
-
-		bot.Send(msg)
 	}
+
 }
