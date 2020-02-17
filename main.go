@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"os"
-	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
@@ -39,8 +38,6 @@ func main() {
 			msg.ReplyToMessageID = update.Message.MessageID
 
 			bot.Send(msg)
-
-			time.Sleep(30 * time.Second)
 		}
 	}
 
