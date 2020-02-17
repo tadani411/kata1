@@ -1,47 +1,41 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
-	"time"
 
-	tb "gopkg.in/tucnak/telebot.v2"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
 func main() {
 	var (
-		// port      = os.Getenv("PORT")       // set automatically
-		// publicURL = os.Getenv("PUBLIC_URL") // from config vars
-		token = os.Getenv("TOKEN") // from config vars
+		token = os.Getenv("TOKEN")
 	)
 
-	log.Println(token)
-
-	poller := &tb.LongPoller{
-		Timeout: 100 * time.Second,
-	}
-
-	pref := tb.Settings{
-		// URL:    publicURL,
-		Token:  "891489265:AAHt-P6qMWV5n8gPH88_xdeFsahm-hEU7k0",
-		Poller: poller,
-	}
-
-	b, err := tb.NewBot(pref)
-
+	bot, err := tgbotapi.NewBotAPI(token)
 	if err != nil {
-		log.Fatal(err)
-		fmt.Println(err)
+		log.Panic(err)
 	}
 
-	b.Handle("/hello", func(m *tb.Message) {
-		b.Send(m.Sender, "Hi!")
-	})
+	bot.Debug = true
 
-	b.Handle(tb.OnText, func(m *tb.Message) {
-		b.Send(m.Sender, "Hi2")
-	})
+	log.Printf("Authorized on account %s", bot.Self.UserName)
 
-	b.Start()
+	u := tgbotapi.NewUpdate(0)
+	u.Timeout = 60
+
+	updates, err := bot.GetUpdatesChan(u)
+
+	for update := range updates {
+		if update.Message == nil { // ignore any non-Message Updates
+			continue
+		}
+
+		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
+
+		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
+		msg.ReplyToMessageID = update.Message.MessageID
+
+		bot.Send(msg)
+	}
 }
